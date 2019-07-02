@@ -61,6 +61,7 @@ class MainActivity : DaggerAppCompatActivity(), OnMapReadyCallback, LocationEngi
     private var locationLayerPlugin: LocationLayerPlugin? = null
     private lateinit var permissionsManager: PermissionsManager
     private var locationEngine: LocationEngine? = null
+    private var load = false
     private var mapRoute : NavigationMapRoute? =null
     var providerFactory : ViewModelProviderFactory? = null
         @Inject set
@@ -135,7 +136,7 @@ class MainActivity : DaggerAppCompatActivity(), OnMapReadyCallback, LocationEngi
             })
     }
     override fun itemClick(position: Int) {
-        if(requestGranted) {
+        if(requestGranted && load) {
             viewModel.allPinData.observe(this, object : Observer<List<PinData>> {
                 override fun onChanged(t: List<PinData>) {
                     if (arrivalMarker != null) {
@@ -183,6 +184,7 @@ class MainActivity : DaggerAppCompatActivity(), OnMapReadyCallback, LocationEngi
         if(location != null){
             originLocation = location
             setCameraLocation(location)
+            load = true
         }
     }
 
